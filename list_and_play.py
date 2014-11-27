@@ -36,15 +36,15 @@ client = soundcloud.Client(access_token=token)
 
 me = client.get('/me')
 
-print("Hello %s" % me.username)
+print("\nHello, %s!\n" % me.username)
 
 favorite_tracks = client.get('/me/favorites')
 
 for num, track in enumerate(favorite_tracks):
 	#import pdb; pdb.set_trace()
-	write_raw(("%d %s\n" % (num, track.title)).encode("utf8"))
+	write_raw(("%d) %s\n" % (num, track.title)).encode("utf8"))
 
-num = int(input("Track: "))
+num = int(input("\nTrack: "))
 
 for track in favorite_tracks[num:]:
 	# get the tracks streaming URL
@@ -53,5 +53,7 @@ for track in favorite_tracks[num:]:
 	url = stream_url.location.replace('https', 'http')
 	
 	# print the tracks stream URL
-	write_raw(("Playing: %s\n" % track.title).encode('utf8'))
+	write_raw(("\nPlaying: %s\n" % track.title).encode('utf8'))
+	write_raw(("By: %s\n" % track.user['username']).encode('utf8'))
+
 	subprocess.call(['mpg123', '-q', url])
